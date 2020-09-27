@@ -14,29 +14,28 @@ class TimeSheetController extends Controller {
     }
 
     public function index() {
-        $timesheets['timesheet'] = auth()->user()->timeSheet()->whereNull('clock_out')->first();
-
-        // return response()->json($timesheets);
-        return view('timesheet.index')->with($timesheets);
+        $data['employee'] = auth()->user()->employee()->firstOrFail();
+        $data['timesheet'] = $data['employee']->timesheet()->whereNull('clock_out')->first();
+        return view('timesheet.index')->with($data);
     }
 
     public function store(Request $request) {
+        $employee = auth()->user()->employee()->firstOrFail();
         $timesheet = TimeSheet::create(
-            ['user_id'=> auth()->user()->id, 'clock_in' => Carbon::now()]
+            ['employee_id'=> $employee->id, 'clock_in' => Carbon::now()]
         );
-
         return redirect(route('timesheet.index'))->with(['status' => 'clock_in']);
     }
 
     public function clockOut(Request $request) {
         $validator = Validator::make($request->all(), [
             'description' => 'string|min:0',
-            // 'rate' => 'numeric|min:0'
         ], $this->messages());
         if($validator->fails()) {
             return redirect()->back()->withErrors($validator->errors());
         }
-        $timesheet = auth()->user()->timeSheet()->whereNull('clock_out')->first();
+        $employee = auth()->user()->employee()->firstOrFail();
+        $timesheet = $employee->timesheet()->whereNull('clock_out')->firstOrFail();
         $timesheet->description = $request->description;
         $timesheet->clock_out = Carbon::now();
         $timesheet->save();

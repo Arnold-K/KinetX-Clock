@@ -32,9 +32,16 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
+                    @if(auth()->user())
+                        <ul class="navbar-nav mr-auto">
+                            @role('employee')
+                            <li><a class="btn btn-light" href="{{route('timesheet.index') }}">TimeSheet</a></li>
+                            @endrole
+                            @role('superadmin')
+                            <li class="ml-1"><a class="btn btn-light" href="{{route('user.index') }}">Users</a></li>
+                            @endrole
+                        </ul>
+                    @endif
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">

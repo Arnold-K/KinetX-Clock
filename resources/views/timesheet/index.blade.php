@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="card-body">
-
+                    <a href="{{route('timesheet-list.show', $employee->id)}}" class="btn btn-primary" href="">View Timesheet</a>
                 </div>
             </div>
         </div>
