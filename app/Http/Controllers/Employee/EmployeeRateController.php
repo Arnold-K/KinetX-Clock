@@ -3,80 +3,33 @@
 namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class EmployeeRateController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index() {
-        //
+class EmployeeRateController extends Controller {
+
+    public function __construct() {
+        $this->middleware('auth');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Employee $employee) {
-        
+        if(!auth()->user()->hasRole('superadmin')) {
+            abort(403);
+        }
+        $data['employee'] = $employee;
+        return view('pages.employee.rate.index')->with($data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Employee $employee) {
-        
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function update(Request $request, Employee $employee) {
+        $validator = Validator::make($request->all(), [
+            'rate' => 'required|numeric'
+        ]);
+        if($validator->fails()){
+            return redirect(route('rate.show', $employee->id))->withErrors($validator->errors());
+        }
+        $employee->rate = $request->rate;
+        $employee->save();
+        return redirect(route('rate.show', $employee->id))->with(['success' => 'Rate has been updated!']);
     }
 }

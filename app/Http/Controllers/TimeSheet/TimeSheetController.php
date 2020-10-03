@@ -28,6 +28,14 @@ class TimeSheetController extends Controller {
         return redirect(route('timesheet.index'))->with(['status' => 'clock_in']);
     }
 
+    public function edit(Request $request, TimeSheet $timesheet) {
+        return view('timesheet.edit')->with(['timesheet' => $timesheet]);
+    }
+
+    public function update(Request $request, TimeSheet $timesheet) {
+        return response()->json($timesheet);
+    }
+
     public function clockOut(Request $request) {
         $validator = Validator::make($request->all(), [
             'description' => 'string|min:0',
