@@ -18,10 +18,11 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
-Route::post('timesheet/clock-out', 'TimeSheetController@clockOut')->name('timesheet.clockOut');
-Route::resource('timesheet', 'TimeSheetController')->only(['index', 'store']);
-Route::get('timesheet-list/{employee}', 'TimeSheetListController@showEmployeeTimesheet')->name('timesheet-list.show');
-Route::post('timesheet-list/{employee}/search', 'TimeSheetListController@showEmployeeTimesheet')->name('timesheet-list.search.show');
-Route::get('timesheet-list', 'TimeSheetListController@index')->name('timesheet-list.index');
+Route::post('timesheet/clock-out', 'TimeSheet\TimeSheetController@clockOut')->name('timesheet.clockOut');
+Route::resource('timesheet', 'TimeSheet\TimeSheetController')->only(['index', 'store']);
+Route::get('timesheet-list/{employee}', 'TimeSheet\TimeSheetListController@showEmployeeTimesheet')->name('timesheet-list.show');
+Route::get('timesheet-list/{employee}/export', 'TimeSheet\TimeSheetExportController@index')->name('timesheet-list.export.index');
+Route::post('timesheet-list/{employee}/search', 'TimeSheet\TimeSheetListController@showEmployeeTimesheet')->name('timesheet-list.search.show');
+Route::get('timesheet-list', 'TimeSheet\TimeSheetListController@index')->name('timesheet-list.index');
 Route::resource('user', 'UserController');
 Route::resource('employee.rate', 'Employee\EmployeeRateController');

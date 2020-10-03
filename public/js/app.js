@@ -37261,10 +37261,16 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _timesheet_Timesheet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./timesheet/Timesheet */ "./resources/js/timesheet/Timesheet.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
+
+if (document.querySelector('#timesheets')) new _timesheet_Timesheet__WEBPACK_IMPORTED_MODULE_0__["default"]();
 
 /***/ }),
 
@@ -37313,6 +37319,69 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/timesheet/Timesheet.js":
+/*!*********************************************!*\
+  !*** ./resources/js/timesheet/Timesheet.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Timesheet; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Timesheet = /*#__PURE__*/function () {
+  function Timesheet() {
+    _classCallCheck(this, Timesheet);
+
+    this.timeSheetsListGroup = document.querySelector('#timesheets');
+    this.onLoad();
+    this.events();
+  }
+
+  _createClass(Timesheet, [{
+    key: "onLoad",
+    value: function onLoad() {}
+  }, {
+    key: "events",
+    value: function events() {
+      var _this = this;
+
+      $('#timesheets').on('hidden.bs.collapse', function (e) {
+        return _this.hiddenTimesheet(e);
+      });
+      $('#timesheets').on('shown.bs.collapse', function (e) {
+        return _this.shownTimesheet(e);
+      });
+    }
+  }, {
+    key: "hiddenTimesheet",
+    value: function hiddenTimesheet(e) {
+      var element = e.target.parentElement.querySelector('.card-header button i');
+      element.classList.remove('fa-chevron-down');
+      element.classList.add('fa-chevron-right');
+    }
+  }, {
+    key: "shownTimesheet",
+    value: function shownTimesheet(e) {
+      var element = e.target.parentElement.querySelector('.card-header button i');
+      element.classList.remove('fa-chevron-right');
+      element.classList.add('fa-chevron-down');
+    }
+  }]);
+
+  return Timesheet;
+}();
+
+
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -37331,8 +37400,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\CaptainX\Desktop\Upwork\Kino\laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\CaptainX\Desktop\Upwork\Kino\laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\CaptainX\Desktop\Upwork\Kino\clock\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\CaptainX\Desktop\Upwork\Kino\clock\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

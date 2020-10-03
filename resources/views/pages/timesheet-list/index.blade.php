@@ -31,7 +31,7 @@
         <div class="card mt-3">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
-                    <h4>TimeSheet</h4>
+                    <h4>Timesheet</h4>
                     <button class="btn btn-success">{{$total_working_time}}</button>
                 </div>
                 
@@ -41,22 +41,27 @@
                     @foreach ($timesheets as $timesheet)
                         <div class="card">
                             <div class="card-header" id="timesheet-heading-{{$timesheet->id}}">
-                                <div class="d-flex justify-content-between">
-                                    <h2 class="mb-0">
-                                        <button class="btn btn-white" type="button" data-toggle="collapse" data-target="#collapse-{{$timesheet->id}}" aria-expanded="true" aria-controls="collapse-{{$timesheet->id}}">
-                                            {{$timesheet->clock_in}} - {{($timesheet->clock_out)?$timesheet->clock_out:'Ongoing'}}
-                                        </button>
-                                    </h2>
-                                    <div>
-                                        <button class="btn btn-dark">
-                                            {{ (new \Carbon\Carbon($timesheet->clock_in))->diff(new \Carbon\Carbon($timesheet->clock_out))->format('%h:%I') }}
-                                        </button>
+                                <div class="d-flex">
+                                    <button data-timesheet="{{$timesheet->id}}" class="btn btn-white" type="button" data-toggle="collapse" data-target="#collapse-{{$timesheet->id}}" aria-controls="collapse-{{$timesheet->id}}">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                    <div class="d-flex justify-content-between flex-grow-1">
+                                        <h2 class="mb-0 flex-grow-1">
+                                            <button data-timesheet="{{$timesheet->id}}" class="btn btn-white w-100 text-left" type="button" data-toggle="collapse" data-target="#collapse-{{$timesheet->id}}" aria-controls="collapse-{{$timesheet->id}}">
+                                                {{$timesheet->clock_in}} - {{($timesheet->clock_out)?$timesheet->clock_out:'Ongoing'}}
+                                            </button>
+                                        </h2>
+                                        <div>
+                                            <button class="btn btn-dark">
+                                                {{ (new \Carbon\Carbon($timesheet->clock_in))->diff(new \Carbon\Carbon($timesheet->clock_out))->format('%h:%I') }}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="collapse-{{$timesheet->id}}" class="collapse" aria-labelledby="timesheet-heading-{{$timesheet->id}}" data-parent="#timesheets">
                                 <div class="card-body">
-                                    {{$timesheet->description}}
+                                    {{ $timesheet->description }}
                                 </div>
                             </div>
                         </div>
@@ -66,8 +71,8 @@
         </div>
     @endif
     <div class="mt-3 d-flex justify-content-between">
-        <a class="btn btn-primary" href="{{url()->previous()}}">Go Back</a>
-        <a class="btn btn-dark" href="">Export to CSV</a>
+        <a class="btn btn-primary" href="{{ url()->previous() }}">{{ __('Go Back') }}</a>
+        <a class="btn btn-dark" href="{{ route('timesheet-list.export.index', $employee->id) }}?type=csv">{{ __('Export to CSV')}}</a>
     </div>
 </div>
 @endsection('content')
