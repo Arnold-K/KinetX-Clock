@@ -23,6 +23,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.15.0"
+        "@fortawesome/fontawesome-free": "^5.15.0",
+        "downloadjs": "^1.4.7"
     }
 }

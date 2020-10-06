@@ -14,6 +14,7 @@
         </div>
         <div class="card-body">
             <form action="{{route('timesheet-list.search.show', $employee->id)}}" method="GET" >
+                <input type="hidden" name="employee_id" id="employee_id_field" value="{{ $employee->id }}">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -95,7 +96,7 @@
     @endif
     <div class="mt-3 d-flex justify-content-between">
         <a class="btn btn-primary" href="{{ url()->previous() }}">{{ __('Go Back') }}</a>
-        <a class="btn btn-dark" href="{{ route('timesheet-list.export.index', $employee->id) }}?type=csv">{{ __('Export to CSV')}}</a>
+        <button id="csv_export_btn" class="btn btn-dark">{{ __('Export to CSV')}}</button>
     </div>
 </div>
 @endsection('content')

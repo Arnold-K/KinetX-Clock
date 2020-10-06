@@ -29,11 +29,13 @@ class TimeSheetController extends Controller {
     }
 
     public function edit(Request $request, TimeSheet $timesheet) {
-        return view('timesheet.edit')->with(['timesheet' => $timesheet]);
+        return view('timesheet.edit')->with(['timesheet' => $timesheet, "employee" => $timesheet->employee]);
     }
 
     public function update(Request $request, TimeSheet $timesheet) {
-        return response()->json($timesheet);
+        $timesheet->description = $request->description;
+        $timesheet->save();
+        return redirect(route('timesheet-list.show', $timesheet->employee->id));
     }
 
     public function clockOut(Request $request) {

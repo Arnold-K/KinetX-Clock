@@ -26,32 +26,29 @@
 
 
                     @if ($timesheet)
-                        <form action="{{route('timesheet.clockOut')}}" method="POST">
+                        <form action="{{route('timesheet.update', $timesheet->id)}}" method="POST">
                             @csrf
+                            <input type="hidden" name="_method" value="put">
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
+                                <textarea class="form-control" name="description" id="description" cols="30" rows="10">{{ $timesheet->description }}</textarea>
                                 @error('description')
                                     <small class="text-danger">{{$message}}</small>
                                 @enderror
                             </div>
-                            <div class="form-group d-flex justify-content-center">
-                                <button name="clock_out_btn" id="clock_out_btn" class="btn btn-primary" type="submit" >{{ __('Clock Out')}}</button>
+                            <div class="card-body d-flex justify-content-around">
+                                <a href="{{ url()->previous() }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
+                                <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
                             </div>
                         </form>
                     @else
-                        <form action="{{route('timesheet.store')}}" name="clock_in_form" method="POST">
-                            @csrf
-                            <div class="form-group d-flex justify-content-center">
-                                <button class="btn btn-primary" type="submit" >{{ __('Clock In')}}</button>
-                            </div>
-                        </form>
+                        <div class="card-body">
+                            <a href="{{ url()->previous() }}" class="btn btn-primary">{{ __('Go Back') }}</a>
+                        </div>
                     @endif
                 </div>
 
-                <div class="card-body">
-                    <a href="{{route('timesheet-list.show', $employee->id)}}" class="btn btn-primary" href="">View Timesheet</a>
-                </div>
+
             </div>
         </div>
     </div>
