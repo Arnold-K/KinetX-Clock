@@ -40819,14 +40819,17 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _timesheet_Timesheet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./timesheet/Timesheet */ "./resources/js/timesheet/Timesheet.js");
-/* harmony import */ var _timesheet_TimesheetExport__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./timesheet/TimesheetExport */ "./resources/js/timesheet/TimesheetExport.js");
+/* harmony import */ var _payment_Payment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./payment/Payment */ "./resources/js/payment/Payment.js");
+/* harmony import */ var _timesheet_Timesheet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./timesheet/Timesheet */ "./resources/js/timesheet/Timesheet.js");
+/* harmony import */ var _timesheet_TimesheetExport__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./timesheet/TimesheetExport */ "./resources/js/timesheet/TimesheetExport.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-if (document.querySelector('#timesheets')) new _timesheet_Timesheet__WEBPACK_IMPORTED_MODULE_0__["default"]();
-if (document.querySelector('#csv_export_btn')) new _timesheet_TimesheetExport__WEBPACK_IMPORTED_MODULE_1__["default"]();
+
+if (document.querySelector('#payment-list')) new _payment_Payment__WEBPACK_IMPORTED_MODULE_0__["default"]();
+if (document.querySelector('#timesheets')) new _timesheet_Timesheet__WEBPACK_IMPORTED_MODULE_1__["default"]();
+if (document.querySelector('#csv_export_btn')) new _timesheet_TimesheetExport__WEBPACK_IMPORTED_MODULE_2__["default"]();
 
 /***/ }),
 
@@ -40872,6 +40875,46 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/payment/Payment.js":
+/*!*****************************************!*\
+  !*** ./resources/js/payment/Payment.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var _default = /*#__PURE__*/function () {
+  function _default() {
+    _classCallCheck(this, _default);
+
+    this.paymentListGroup = '#payment-list';
+    this.onLoad();
+  }
+
+  _createClass(_default, [{
+    key: "onLoad",
+    value: function onLoad() {}
+  }]);
+
+  return _default;
+}();
+
+
 
 /***/ }),
 

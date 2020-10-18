@@ -10,10 +10,11 @@ class Payment extends Model {
     protected $fillable = [
         'date',
         'amount',
+        'rate',
         'employee_id'
     ];
 
-    public function user() {
+    public function employee() {
         return $this->belongsTo('App\Models\Employee', 'employee_id');
     }
 

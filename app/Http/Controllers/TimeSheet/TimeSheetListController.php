@@ -34,19 +34,49 @@ class TimeSheetListController extends Controller {
                 return redirect(route('timesheet-list.index', $employee->id))->with(["error" => "Timesheet list is empty"]);
             }
             $total_working_time = 0;
+            $total_selected_amount = 0;
             foreach($timesheets as $timesheet){
                 if($timesheet->clock_out){
                     $clock_out = new Carbon($timesheet->clock_out);
                     $clock_in = new Carbon($timesheet->clock_in);
                     $total_working_time = (int)$total_working_time + (int)$clock_out->diffInMinutes($clock_in);
+                    $current_working_time = (int)$clock_out->diffInMinutes($clock_in);
+                    $total_selected_amount = $total_selected_amount + (($current_working_time / 60) * $timesheet->rate) ;
+                }
+
+            }
+            $data['timesheets'] = $timesheets;
+            $data['employee'] = $employee;
+            $data['total_selected_amount'] = $total_selected_amount;
+            $data['total_working_time'] = $total_working_time;
+
+            return view('pages.timesheet-list.index')->with($data);
+        } else {
+            $start_time = Carbon::now()->subDays(30);
+            $end_time = Carbon::now()->hour(23)->minute(59)->second(59);
+            $timesheets = $employee->timesheet()->whereBetween('clock_out', [$start_time, $end_time])->get();
+            if(!$timesheets) {
+                return redirect(route('timesheet-list.index', $employee->id))->with(["error" => "Timesheet list is empty"]);
+            }
+            $total_working_time = 0;
+            $total_selected_amount = 0;
+            foreach($timesheets as $timesheet){
+                if($timesheet->clock_out){
+                    $clock_out = new Carbon($timesheet->clock_out);
+                    $clock_in = new Carbon($timesheet->clock_in);
+                    $total_working_time = (int)$total_working_time + (int)$clock_out->diffInMinutes($clock_in);
+                    $current_working_time = (int)$clock_out->diffInMinutes($clock_in);
+                    $total_selected_amount = $total_selected_amount + (($current_working_time / 60) * $timesheet->rate) ;
                 }
 
             }
 
-            return view('pages.timesheet-list.index')->with(['timesheets' => $timesheets, 'employee' => $employee, 'total_working_time' => ($total_working_time)]);
+            $data['timesheets'] = $timesheets;
+            $data['total_selected_amount'] = $total_selected_amount;
+            $data['total_working_time'] = $total_working_time;
         }
-        $timesheets = [];
-        return view('pages.timesheet-list.index')->with(['timesheets' => $timesheets, 'employee' => $employee]);
+        $data['employee'] = $employee;
+        return view('pages.timesheet-list.index')->with($data);
     }
 
 }

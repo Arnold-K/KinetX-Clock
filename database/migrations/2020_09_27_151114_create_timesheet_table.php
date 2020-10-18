@@ -18,6 +18,7 @@ class CreateTimesheetTable extends Migration
             $table->text('description')->nullable();
             $table->dateTime('clock_in')->nullable();
             $table->dateTime('clock_out')->nullable();
+            $table->decimal('rate', 9, 2)->unsigned()->nullable()->default(NULL);
             $table->foreignId('employee_id');
             $table->softDeletes();
             $table->timestamps();

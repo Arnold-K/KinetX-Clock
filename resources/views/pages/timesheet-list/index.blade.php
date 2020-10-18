@@ -47,7 +47,7 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         <span>Payout: </span>
-                        <span><strong>${{ ($total_working_time/60) * $employee->rate }}</strong></span>
+                        <span><strong>${{ $total_selected_amount }}</strong></span>
                     </div>
                 </div>
             </div>

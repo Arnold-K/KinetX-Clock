@@ -16,7 +16,12 @@
             @enderror
             <div class="card">
                 <div class="card-header">
-                    <h4>Select dates</h4>
+                    <div class="d-flex justify-content-between">
+                        <h4>Select dates</h4>
+                        <div>
+                            <span>Balance: <b>{{ $total_balance }}</b></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form action="{{route('payment.show', $employee->id)}}" method="GET" >
@@ -48,20 +53,30 @@
                 </div>
                 <div class="my-3"></div>
             @enderror
+            @if (session()->has('amount_updated_success'))
+                <div class="alert alert-success text-center" role="alert">
+                    <i class="fas fa-info-circle"></i> {{ session()->get('amount_updated_success') }}
+                </div>
+            @endif
             @if (isset($payments) && count($payments))
                 <div class="card">
                     <div class="card-header">
                         <h5>{{ __('Payment List') }}</h5>
                     </div>
                     <div class="card-body">
-                        @foreach ($payments as $payment)
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between">
-                                    <div>{{ $payment->date }}</div>
-                                    <div class="col-2">${{ $payment->amount }}</div>
-                                </div>
-                            </li>
-                        @endforeach
+                        <ul id="payment-list" class="list-group">
+                            @foreach ($payments as $payment)
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-between">
+                                        <div>{{ $payment->date }}</div>
+                                        <div class="col-2">${{ $payment->amount }}</div>
+                                        <div class="col-2">
+                                            <a href="{{ route('payment.edit', $payment->id) }}" class="btn btn-sm btn-secondary"><i class="far fa-edit"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             @endif

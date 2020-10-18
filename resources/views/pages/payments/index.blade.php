@@ -59,6 +59,9 @@
                                 <div class="d-flex justify-content-between">
                                     <div>{{ $payment->date }}</div>
                                     <div class="col-2">${{ $payment->amount }}</div>
+                                    <div class="col-2">
+                                        <a href="{{ route('payment.edit', $payment->id) }}" class="btn btn-sm btn-secondary"><i class="far fa-edit"></i></a>
+                                    </div>
                                 </div>
                             </li>
                         @endforeach

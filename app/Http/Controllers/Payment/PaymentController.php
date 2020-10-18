@@ -78,6 +78,20 @@ class PaymentController extends Controller
             return redirect(route('payment.index'))->withErrors(['access_employee' => "You are not authorized to view this content!"]);
         }
         $data['employee'] = $employee;
+        $total_payments_sum = $employee->payments->sum('amount');
+
+        $timesheets = $employee->timesheet()->get();
+        $total_payment = 0;
+
+        foreach($timesheets as $timesheet){
+            if($timesheet->clock_out){
+                $clock_out = new Carbon($timesheet->clock_out);
+                $clock_in = new Carbon($timesheet->clock_in);
+                $total_payment = $total_payment + (((int)$clock_out->diffInMinutes($clock_in) / 60) * $timesheet->rate);
+            }
+        }
+        $data['total_balance'] = ($total_payment) - $total_payments_sum;
+
         if($request->has('start_date') && $request->has('end_date')){
             $data['start_time'] = Carbon::createFromDate($request->start_date)->toDateString();
             $data['end_time'] = Carbon::createFromDate($request->end_date)->hour(23)->minute(59)->second(59)->toDateString();
@@ -91,7 +105,7 @@ class PaymentController extends Controller
             $data['end_time'] = Carbon::now()->toDateString();
             $data['payments'] = $employee->payments()->whereBetween('date', [$data['start_time'], $data['end_time']])->get();
             if(!count($data['payments'])) {
-                return redirect(route('payment.show', $employee->id))->with($data)->withErrors(['empty' => "There is no data for this search"]);
+                return view('pages.payments.show')->with($data)->with($data)->withErrors(['empty' => "There is no data for this User"]);
             }
         }
 
@@ -104,9 +118,10 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(Payment $payment) {
+        $data['payment'] = $payment;
+        $data['employee'] = $payment->employee->user;
+        return view('pages.payments.edit')->with($data);
     }
 
     /**
@@ -116,9 +131,18 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, Payment $payment) {
+        $validator = Validator::make($request->all(), [
+            'amount' => 'required|min:0'
+        ]);
+        if($validator->fails()) {
+            return redirect(route('payment.edit', $payment->id))->withErrors($validator->errors());
+        }
+
+        $payment->amount = $request->amount;
+        $payment->save();
+
+        return redirect(route('payment.show', $payment->employee->id))->with(['amount_updated_success' => "Amount has been updated successfully"]);
     }
 
     /**

@@ -17,6 +17,30 @@ class TimeSheetController extends Controller {
     public function index() {
         $data['employee'] = auth()->user()->employee()->firstOrFail();
         $data['timesheet'] = $data['employee']->timesheet()->whereNull('clock_out')->first();
+
+        $start_time = Carbon::now()->subDays(30);
+        $end_time = Carbon::now()->hour(23)->minute(59)->second(59);
+        $timesheets = $data['employee']->timesheet()->whereBetween('clock_out', [$start_time, $end_time])->get();
+        if(!$timesheets) {
+            return redirect(route('timesheet-list.index', $data['employee']->id))->with(["error" => "Timesheet list is empty"]);
+        }
+        $total_working_time = 0;
+        $total_selected_amount = 0;
+        foreach($timesheets as $timesheet){
+            if($timesheet->clock_out){
+                $clock_out = new Carbon($timesheet->clock_out);
+                $clock_in = new Carbon($timesheet->clock_in);
+                $total_working_time = (int)$total_working_time + (int)$clock_out->diffInMinutes($clock_in);
+                $current_working_time = (int)$clock_out->diffInMinutes($clock_in);
+                $total_selected_amount = $total_selected_amount + (($current_working_time / 60) * $timesheet->rate) ;
+            }
+
+        }
+
+        $data['timesheets'] = $timesheets;
+        $data['total_selected_amount'] = $total_selected_amount;
+        $data['total_working_time'] = $total_working_time;
+
         return view('pages.timesheet.index')->with($data);
     }
 
@@ -48,6 +72,7 @@ class TimeSheetController extends Controller {
         $employee = auth()->user()->employee()->firstOrFail();
         $timesheet = $employee->timesheet()->whereNull('clock_out')->firstOrFail();
         $timesheet->description = $request->description;
+        $timesheet->rate = $employee->rate;
         $timesheet->clock_out = Carbon::now();
         $timesheet->save();
         return redirect(route('timesheet.index'))->with(['status' => 'clock_out']);
