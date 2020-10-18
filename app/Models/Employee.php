@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\TimeSheet;
+use App\Models\Payment;
 
 class Employee extends Model {
     protected $table = 'employees';
 
     protected $fillable = [
-        'description',
+        'description',#
         'rate',
         'clock_in',
         'clock_out',
@@ -23,5 +24,8 @@ class Employee extends Model {
     }
     public function timesheet() {
         return $this->hasMany(TimeSheet::class);
+    }
+    public function payments() {
+        return $this->hasMany(Payment::class);
     }
 }

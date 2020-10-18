@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.0",
-        "downloadjs": "^1.4.7"
+        "downloadjs": "^1.4.7",
+        "sweetalert2": "^10.6.1"
     }
 }

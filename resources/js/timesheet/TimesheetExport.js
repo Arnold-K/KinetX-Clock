@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2'
+
 export default class TimesheetExport {
 
     constructor() {
@@ -27,7 +29,13 @@ export default class TimesheetExport {
         axios.get(`/timesheet-list/${this.employeeId.value}/export?start_date=${this.startDate.value}&end_date=${this.endDate.value}`).then(res => {
             require("downloadjs")( res.data, "Timesheet.csv", "text/csv" );
         }).catch(err => {
-            console.log(err)
+            if(err.response.data.message) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.message
+                  })
+            }
         })
     }
 

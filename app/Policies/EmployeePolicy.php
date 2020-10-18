@@ -29,9 +29,8 @@ class EmployeePolicy
      * @param  \App\Employee  $employee
      * @return mixed
      */
-    public function view(User $user, Employee $employee)
-    {
-        //
+    public function view(User $user, Employee $employee) {
+        return $user->employee->id === $employee->id;
     }
 
     public function viewTimeSheet(User $user, Employee $employee) {
