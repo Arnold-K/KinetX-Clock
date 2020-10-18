@@ -25,7 +25,7 @@ class TimeSheetController extends Controller {
         $timesheet = TimeSheet::create(
             ['employee_id'=> $employee->id, 'clock_in' => Carbon::now()]
         );
-        return redirect(route('pages.timesheet.index'))->with(['status' => 'clock_in']);
+        return redirect(route('timesheet.index'))->with(['status' => 'clock_in']);
     }
 
     public function edit(Request $request, TimeSheet $timesheet) {
