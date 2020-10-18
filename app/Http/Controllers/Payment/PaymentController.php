@@ -21,6 +21,20 @@ class PaymentController extends Controller
         $data['start_time'] = Carbon::now()->subDays(30)->toDateString();
         $data['end_time'] = Carbon::now()->toDateString();
         $data['payments'] = $data['employee']->payments()->whereBetween('date', [$data['start_time'], $data['end_time']])->get();
+        $data['total_balance'] = 0;
+
+        $total_payments_sum = $data['employee']->payments->sum('amount');
+        $timesheets = $data['employee']->timesheet()->get();
+        $total_payment = 0;
+
+        foreach($timesheets as $timesheet){
+            if($timesheet->clock_out){
+                $clock_out = new Carbon($timesheet->clock_out);
+                $clock_in = new Carbon($timesheet->clock_in);
+                $total_payment = $total_payment + (((int)$clock_out->diffInMinutes($clock_in) / 60) * $timesheet->rate);
+            }
+        }
+        $data['total_balance'] = ($total_payment) - $total_payments_sum;
         if(!count($data['payments'])) {
             return view('pages.payments.show')->with($data)->withErrors(['empty' => "This user has no payments in the last 30 days"]);
         }
@@ -105,7 +119,7 @@ class PaymentController extends Controller
             $data['end_time'] = Carbon::now()->toDateString();
             $data['payments'] = $employee->payments()->whereBetween('date', [$data['start_time'], $data['end_time']])->get();
             if(!count($data['payments'])) {
-                return view('pages.payments.show')->with($data)->with($data)->withErrors(['empty' => "There is no data for this User"]);
+                return view('pages.payments.show')->with($data)->withErrors(['empty' => "There is no data for this User"]);
             }
         }
 
