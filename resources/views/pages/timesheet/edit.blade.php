@@ -16,7 +16,7 @@
             @endif
             <div class="card">
                 @if ($timesheet)
-                    <div class="card-header bg-primary text-white">{{ __('Clock Out') }}</div>
+                    <div class="card-header bg-primary text-white">{{ __('Update Timesheet') }}</div>
                 @else
                     <div class="card-header bg-primary text-white">{{ __('Clock in a timesheet') }}</div>
                 @endif

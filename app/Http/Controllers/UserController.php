@@ -31,4 +31,12 @@ class UserController extends Controller {
         }
         return view('pages.users.edit')->with(['user' => $user, 'roles' => Role::all()]);
     }
+
+    public function destroy(Request $request, User $user) {
+        if(auth()->user()->cant('destroy', $user)) {
+            abort(403);
+        }
+        $user->delete();
+        return response()->json(['redirect' => url(route('user.index'))], 200);
+    }
 }

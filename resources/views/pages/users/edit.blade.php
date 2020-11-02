@@ -2,7 +2,10 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h4 class="title">Users List</h4>
+            <div class="d-flex align-items-center justify-content-between">
+                <h4 class="title m-0">Users List</h4>
+                <a id="delete-user" class="btn btn-danger" href="{{route('user.destroy', $user->id)}}" type="Back">Delete User</a>
+            </div>
         </div>
         <div class="card-body">
             <div class="form-group">
@@ -37,7 +40,7 @@
             </div>
         </div>
         <div class="card-footer">
-        
+
         </div>
     </div>
 </div>

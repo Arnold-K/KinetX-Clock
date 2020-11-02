@@ -53,7 +53,7 @@ class TimeSheetController extends Controller {
     }
 
     public function edit(Request $request, TimeSheet $timesheet) {
-        return view('timesheet.edit')->with(['timesheet' => $timesheet, "employee" => $timesheet->employee]);
+        return view('pages.timesheet.edit')->with(['timesheet' => $timesheet, "employee" => $timesheet->employee]);
     }
 
     public function update(Request $request, TimeSheet $timesheet) {

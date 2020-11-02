@@ -25,5 +25,6 @@ Route::get('timesheet-list/{employee}', 'TimeSheet\TimeSheetListController@showE
 Route::get('timesheet-list/{employee}/export', 'TimeSheet\TimeSheetExportController@index')->name('timesheet-list.export.index');
 Route::get('timesheet-list/{employee}/search', 'TimeSheet\TimeSheetListController@showEmployeeTimesheet')->name('timesheet-list.search.show');
 Route::get('timesheet-list', 'TimeSheet\TimeSheetListController@index')->name('timesheet-list.index');
+Route::put('user/{user}/password', 'User\UserPasswordController@overridePassword');
 Route::resource('user', 'UserController');
 Route::resource('employee/rate', 'Employee\EmployeeRateController')->parameters(["rate" => "employee"])->only(["show", "update"]);
