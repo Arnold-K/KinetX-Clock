@@ -53,11 +53,25 @@ class TimeSheetController extends Controller {
     }
 
     public function edit(Request $request, TimeSheet $timesheet) {
-        return view('pages.timesheet.edit')->with(['timesheet' => $timesheet, "employee" => $timesheet->employee]);
+        $timesheet_start_time = Carbon::createFromFormat('Y-m-d H:i:s', $timesheet->clock_in);
+        $timesheet_end_time = Carbon::createFromFormat('Y-m-d H:i:s', $timesheet->clock_out);
+
+        return view('pages.timesheet.edit')->with([
+            'timesheet' => $timesheet,
+            "employee" => $timesheet->employee,
+            "timesheet_start_time" => $timesheet_start_time,
+            "timesheet_end_time" => $timesheet_end_time
+        ]);
+    }
+
+    public function destroy(Request $request, TimeSheet $timesheet) {
+        return response()->json($timesheet);
     }
 
     public function update(Request $request, TimeSheet $timesheet) {
         $timesheet->description = $request->description;
+        $timesheet->clock_in = $request->clock_in;
+        $timesheet->clock_out = $request->clock_out;
         $timesheet->save();
         return redirect(route('timesheet-list.show', $timesheet->employee->id));
     }

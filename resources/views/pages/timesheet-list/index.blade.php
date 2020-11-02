@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="collapse-{{$timesheet->id}}" class="collapse" aria-labelledby="timesheet-heading-{{$timesheet->id}}" data-parent="#timesheets">
+                        <div data-entry="$timesheet->id" id="collapse-{{$timesheet->id}}" class="collapse" aria-labelledby="timesheet-heading-{{$timesheet->id}}" data-parent="#timesheets">
                             <div class="card-body">
                                 <div class="alert alert-white" role="alert">
                                     <div>
@@ -84,6 +84,7 @@
                                     </div>
                                     <div class="mt-3">
                                         <a href="{{ route('timesheet.edit', $timesheet->id) }}" class="btn btn-primary">{{ __('Update') }}</a>
+                                        <button data-action="delete-timesheet-entry" class="btn btn-danger">{{ __('Delete') }}</button>
                                     </div>
                                 </div>
                             </div>

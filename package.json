@@ -24,7 +24,11 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.0",
+        "bootstrap-datepicker": "^1.9.0",
         "downloadjs": "^1.4.7",
-        "sweetalert2": "^10.6.1"
+        "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+        "moment": "^2.29.1",
+        "sweetalert2": "^10.6.1",
+        "tempusdominus-bootstrap-4": "^5.1.2"
     }
 }
