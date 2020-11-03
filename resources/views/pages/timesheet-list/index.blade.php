@@ -51,7 +51,7 @@
                     <div class="d-flex justify-content-between flex-grow-1">
                         <h2 class="mb-0 flex-grow-1">
                             <button data-timesheet="create" class="btn btn-white w-100 text-left {{ session()->has('show_create_timesheet') ?'':'collapsed' }}" type="button" data-toggle="collapse" data-target="#collapse-create" aria-controls="collapse-create" aria-expanded="{{ session()->has('show_create_timesheet') ?'true':'false' }}">
-                                {{ __('Create Timesheet') }}
+                                {{ __('Create Timesheet Entry') }}
                             </button>
                         </h2>
                     </div>
@@ -175,7 +175,7 @@
                                         {{ $timesheet->description }}
                                     </div>
                                     <div class="mt-3">
-                                        <a href="{{ route('timesheet.edit', $timesheet->id) }}" class="btn btn-primary">{{ __('Update') }}</a>
+                                        <a href="{{ route('timesheet.edit', $timesheet->id) }}" class="btn btn-primary">{{ __('Edit') }}</a>
                                         <button data-action="delete-timesheet-entry" class="btn btn-danger">{{ __('Delete') }}</button>
                                     </div>
                                 </div>
