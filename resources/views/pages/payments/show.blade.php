@@ -66,12 +66,13 @@
                     <div class="card-body">
                         <ul id="payment-list" class="list-group">
                             @foreach ($payments as $payment)
-                                <li class="list-group-item">
+                                <li class="list-group-item" data-id="{{ $payment->id }}">
                                     <div class="d-flex justify-content-between">
                                         <div>{{ $payment->date }}</div>
                                         <div class="col-2">${{ $payment->amount }}</div>
                                         <div class="col-2">
                                             <a href="{{ route('payment.edit', $payment->id) }}" class="btn btn-sm btn-secondary"><i class="far fa-edit"></i></a>
+                                            <button class="btn btn-sm btn-danger" type="button" data-action="delete-payment"><i class="far fa-trash-alt"></i></button>
                                         </div>
                                     </div>
                                 </li>

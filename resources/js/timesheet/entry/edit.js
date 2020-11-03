@@ -2,9 +2,6 @@ global.moment = require('moment');
 export default class TimesheetEntryEdit {
 
     constructor() {
-
-        console.log("loaded")
-
         this.onLoad()
     }
 

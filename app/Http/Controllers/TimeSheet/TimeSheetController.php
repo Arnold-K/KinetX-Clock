@@ -45,6 +45,37 @@ class TimeSheetController extends Controller {
     }
 
     public function store(Request $request) {
+        if($request->has('custom')) {
+            $validator = Validator::make($request->all(), [
+                "employee" => "required|exists:employees,id",
+                "clock_in" => "required",
+                "clock_out" => "required",
+                "description" => "required|min:1"
+            ]);
+            if($validator->fails()) {
+                return redirect( url()->previous() )->withErrors($validator->errors())->with(["show_create_timesheet" => true]);
+            }
+
+            $start_time = Carbon::createFromFormat('Y-m-d H:i:s', $request->clock_in);
+            $end_time = Carbon::createFromFormat('Y-m-d H:i:s', $request->clock_out);
+
+            if($start_time->gt($end_time)) {
+                return redirect( url()->previous() )->withErrors([
+                    "start_time_greater" => "Clock in time cannot be greater than clock out!"
+                ])->with(["show_create_timesheet" => true]);
+            }
+
+            $timesheet = TimeSheet::create([
+                "employee_id" => $request->employee,
+                "clock_in" => $request->clock_in,
+                "clock_out" => $request->clock_out,
+                "description" => $request->description
+            ]);
+
+            return redirect( url()->previous() )->with([
+                "timesheet_entry_create_success" => "Timesheet entry created successfully"
+            ]);
+        }
         $employee = auth()->user()->employee()->firstOrFail();
         $timesheet = TimeSheet::create(
             ['employee_id'=> $employee->id, 'clock_in' => Carbon::now()]
@@ -65,7 +96,8 @@ class TimeSheetController extends Controller {
     }
 
     public function destroy(Request $request, TimeSheet $timesheet) {
-        return response()->json($timesheet);
+        $timesheet->delete();
+        return response()->json(["message" => "Timesheet entry has been deleted!"]);
     }
 
     public function update(Request $request, TimeSheet $timesheet) {

@@ -16,4 +16,4 @@ if(document.querySelector('#csv_export_btn'))       new TimesheetExport()
 
 if( document.querySelector('#override-password-btn') && document.querySelector('#override-password-modal') ) new OverridePassword()
 if(document.querySelector('#user-list-group'))      new UserIndex()
-if(document.querySelector('#timesheet-edit-card')) new TimesheetEntryEdit()
+if(document.querySelector('#start_time') && document.querySelector('#end_time')) new TimesheetEntryEdit()

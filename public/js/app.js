@@ -65973,7 +65973,7 @@ if (document.querySelector('#timesheets')) new _timesheet_Timesheet__WEBPACK_IMP
 if (document.querySelector('#csv_export_btn')) new _timesheet_TimesheetExport__WEBPACK_IMPORTED_MODULE_4__["default"]();
 if (document.querySelector('#override-password-btn') && document.querySelector('#override-password-modal')) new _password_overridePassword__WEBPACK_IMPORTED_MODULE_0__["default"]();
 if (document.querySelector('#user-list-group')) new _user__WEBPACK_IMPORTED_MODULE_5__["default"]();
-if (document.querySelector('#timesheet-edit-card')) new _timesheet_entry_edit__WEBPACK_IMPORTED_MODULE_2__["default"]();
+if (document.querySelector('#start_time') && document.querySelector('#end_time')) new _timesheet_entry_edit__WEBPACK_IMPORTED_MODULE_2__["default"]();
 
 /***/ }),
 
@@ -66363,13 +66363,43 @@ var _default = /*#__PURE__*/function () {
   function _default() {
     _classCallCheck(this, _default);
 
-    this.paymentListGroup = '#payment-list';
+    this.paymentListGroup = $('#payment-list');
     this.onLoad();
   }
 
   _createClass(_default, [{
     key: "onLoad",
-    value: function onLoad() {}
+    value: function onLoad() {
+      var _this = this;
+
+      this.paymentListGroup.on('click', '[data-action="delete-payment"]', function (e) {
+        return _this.deletePayment(e);
+      });
+    }
+  }, {
+    key: "deletePayment",
+    value: function deletePayment(e) {
+      var payment_id = $(e.currentTarget).closest('li.list-group-item').data('id');
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
+        icon: "warning",
+        title: "Confirm deletion!",
+        text: "Are you sure you want to delete this Payment?",
+        confirmButtonText: "Yes",
+        showCancelButton: true,
+        cancelButtonText: "No"
+      }).then(function (res) {
+        if (res.isConfirmed) {
+          axios.post("/payment/".concat(payment_id), {
+            _method: "delete"
+          }).then(function (res) {
+            $(e.currentTarget).closest('li.list-group-item').remove();
+            sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire("Success!", res.data.message, "success");
+          })["catch"](function (err) {
+            sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire("Error!", "There was an error with the server", "error");
+          });
+        }
+      });
+    }
   }]);
 
   return _default;
@@ -66389,11 +66419,18 @@ var _default = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Timesheet; });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_1__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
 
 var Timesheet = /*#__PURE__*/function () {
   function Timesheet() {
@@ -66418,6 +66455,9 @@ var Timesheet = /*#__PURE__*/function () {
       $('#timesheets').on('shown.bs.collapse', function (e) {
         return _this.shownTimesheet(e);
       });
+      $('#timesheets').on('click', '[data-action="delete-timesheet-entry"]', function (e) {
+        return _this.deleteEntry(e);
+      });
     }
   }, {
     key: "hiddenTimesheet",
@@ -66432,6 +66472,31 @@ var Timesheet = /*#__PURE__*/function () {
       var element = e.target.parentElement.querySelector('.card-header button i');
       element.classList.remove('fa-chevron-right');
       element.classList.add('fa-chevron-down');
+    }
+  }, {
+    key: "deleteEntry",
+    value: function deleteEntry(e) {
+      e.preventDefault();
+      var entry_id = $(e.currentTarget).closest('div[data-entry]').data('entry');
+      sweetalert2__WEBPACK_IMPORTED_MODULE_1___default.a.fire({
+        icon: "warning",
+        title: "Confirm remove!",
+        text: "Are you sure you want to delete this Timesheet Entry?",
+        confirmButtonText: "Yes",
+        showCancelButton: true,
+        cancelButtonText: "No"
+      }).then(function (res) {
+        if (res.isConfirmed) {
+          axios.post("/timesheet/".concat(entry_id), {
+            _method: "delete"
+          }).then(function (res) {
+            $(e.currentTarget).closest('div.card').remove();
+            sweetalert2__WEBPACK_IMPORTED_MODULE_1___default.a.fire("Success!", res.data.mnessage, "success");
+          })["catch"](function (err) {
+            sweetalert2__WEBPACK_IMPORTED_MODULE_1___default.a.fire("Error!", "There was an error with the server", "error");
+          });
+        }
+      });
     }
   }]);
 
@@ -66533,7 +66598,6 @@ var TimesheetEntryEdit = /*#__PURE__*/function () {
   function TimesheetEntryEdit() {
     _classCallCheck(this, TimesheetEntryEdit);
 
-    console.log("loaded");
     this.onLoad();
   }
 

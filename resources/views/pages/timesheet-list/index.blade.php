@@ -1,7 +1,8 @@
 @section('content')
 <div class="container">
+    @if (session()->has('show_create_timesheet') )
 
-
+    @endif
     @if(session()->has('error'))
         <div class="alert alert-danger text-center" role="alert">
             {{ session()->get('error') }}
@@ -35,6 +36,97 @@
             </form>
         </div>
     </div>
+    @can('create_custom_entry')
+        @if (isset($timesheet_entry_create_success))
+            <div class="alert alert-success text-center mt-3" role="alert">
+                {{ $timesheet_entry_create_success }}
+            </div>
+        @endif
+        <div class="card mt-3">
+            <div class="card-header" id="timesheet-heading-create">
+                <div class="d-flex">
+                    <button data-timesheet="create" class="btn btn-white {{ session()->has('show_create_timesheet') ?'':'collapsed' }}" type="button" data-toggle="collapse" data-target="#collapse-create" aria-controls="collapse-create" aria-expanded="{{ session()->has('show_create_timesheet') ?'true':'false' }}">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="d-flex justify-content-between flex-grow-1">
+                        <h2 class="mb-0 flex-grow-1">
+                            <button data-timesheet="create" class="btn btn-white w-100 text-left {{ session()->has('show_create_timesheet') ?'':'collapsed' }}" type="button" data-toggle="collapse" data-target="#collapse-create" aria-controls="collapse-create" aria-expanded="{{ session()->has('show_create_timesheet') ?'true':'false' }}">
+                                {{ __('Create Timesheet') }}
+                            </button>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div data-entry="create" id="collapse-create" class="{{ session()->has('show_create_timesheet') ?'collapse show':'collapse' }}" aria-labelledby="timesheet-heading-create">
+                <div class="card-body">
+                    @error('employee')
+                        <div class="alert alert-danger text-center mt-3" role="alert">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    @error('clock_in')
+                        <div class="alert alert-danger text-center mt-3" role="alert">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    @error('clock_out')
+                        <div class="alert alert-danger text-center mt-3" role="alert">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    @error('description')
+                        <div class="alert alert-danger text-center mt-3" role="alert">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    @error('start_time_greater')
+                        <div class="alert alert-danger text-center mt-3" role="alert">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    <form action="{{route('timesheet.store')}}" method="POST">
+                        @csrf
+                        <input type="hidden" name="employee" value="{{ $employee->id }}">
+                        <input type="hidden" name="custom" value="true">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="start_time">{{ __('Clock in time') }}</label>
+                                    <div class="input-group date" id="start_time" data-target-input="nearest">
+                                        <input type="text" name="clock_in" value="{{ $timesheet_start_time }}" class="form-control datetimepicker-input" data-target="#start_time"/>
+                                        <div class="input-group-append" data-target="#start_time" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="end_time">{{ __('Clock out time') }}</label>
+                                    <div class="input-group date" id="end_time" data-target-input="nearest">
+                                        <input type="text" name="clock_out" value="{{ $timesheet_start_time }}" class="form-control datetimepicker-input" data-target="#end_time"/>
+                                        <div class="input-group-append" data-target="#end_time" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
+                            @error('description')
+                                <small class="text-danger">{{$message}}</small>
+                            @enderror
+                        </div>
+                        <div class="card-body d-flex justify-content-around">
+                            <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endcan
     <div class="card mt-3">
     @if(count($timesheets))
         <div class="card-header">
@@ -76,7 +168,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div data-entry="$timesheet->id" id="collapse-{{$timesheet->id}}" class="collapse" aria-labelledby="timesheet-heading-{{$timesheet->id}}" data-parent="#timesheets">
+                        <div data-entry={{ "$timesheet->id" }} id="collapse-{{$timesheet->id}}" class="collapse" aria-labelledby="timesheet-heading-{{$timesheet->id}}" data-parent="#timesheets">
                             <div class="card-body">
                                 <div class="alert alert-white" role="alert">
                                     <div>

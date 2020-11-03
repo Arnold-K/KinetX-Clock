@@ -20,7 +20,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('timesheet/clock-out', 'TimeSheet\TimeSheetController@clockOut')->name('timesheet.clockOut');
 Route::resource('timesheet', 'TimeSheet\TimeSheetController');
-Route::resource('payment', 'Payment\PaymentController')->only(['index', 'show', 'store', 'edit', 'update']);
+Route::resource('payment', 'Payment\PaymentController');
 Route::get('timesheet-list/{employee}', 'TimeSheet\TimeSheetListController@showEmployeeTimesheet')->name('timesheet-list.show');
 Route::get('timesheet-list/{employee}/export', 'TimeSheet\TimeSheetExportController@index')->name('timesheet-list.export.index');
 Route::get('timesheet-list/{employee}/search', 'TimeSheet\TimeSheetListController@showEmployeeTimesheet')->name('timesheet-list.search.show');
