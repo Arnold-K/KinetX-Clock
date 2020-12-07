@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\TimeSheet;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\TimeSheet;
@@ -65,11 +66,14 @@ class TimeSheetController extends Controller {
                 ])->with(["show_create_timesheet" => true]);
             }
 
+            $employee = Employee::where('id', $request->employee)->firstOrFail();
+
             $timesheet = TimeSheet::create([
                 "employee_id" => $request->employee,
                 "clock_in" => $request->clock_in,
                 "clock_out" => $request->clock_out,
-                "description" => $request->description
+                "description" => $request->description,
+                "rate" => $employee->rate
             ]);
 
             return redirect( url()->previous() )->with([
@@ -77,9 +81,11 @@ class TimeSheetController extends Controller {
             ]);
         }
         $employee = auth()->user()->employee()->firstOrFail();
-        $timesheet = TimeSheet::create(
-            ['employee_id'=> $employee->id, 'clock_in' => Carbon::now()]
-        );
+        $timesheet = TimeSheet::create([
+            'employee_id'=> $employee->id,
+            'clock_in' => Carbon::now()
+        ]);
+        return response()->json($timesheet);
         return redirect(route('timesheet.index'))->with(['status' => 'clock_in']);
     }
 

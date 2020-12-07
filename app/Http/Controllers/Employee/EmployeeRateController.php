@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\TimeSheet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,6 +31,7 @@ class EmployeeRateController extends Controller {
         }
         $employee->rate = $request->rate;
         $employee->save();
+        TimeSheet::whereNull('rate')->where('employee_id', $employee->id)->update(['rate' => $employee->rate]);
         return redirect(route('rate.show', $employee->id))->with(['success' => 'Rate has been updated!']);
     }
 }

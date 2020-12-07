@@ -84,6 +84,7 @@ class TimeSheetListController extends Controller {
             $data['total_working_time'] = $total_working_time;
         }
         $data['employee'] = $employee;
+        return response()->json($data);
         return view('pages.timesheet-list.index')->with($data);
     }
 
