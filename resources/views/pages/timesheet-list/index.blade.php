@@ -162,7 +162,7 @@
                                     </h2>
                                     <div>
                                         <button class="btn btn-dark">
-                                            {{ (new \Carbon\Carbon($timesheet->clock_in))->diff(new \Carbon\Carbon($timesheet->clock_out))->format('%h:%I') }}
+                                            {{ gmdate( 'H:i:s', ( new \Carbon\Carbon($timesheet->clock_out))->diffInSeconds( new \Carbon\Carbon($timesheet->clock_in)) ) }}
                                         </button>
                                     </div>
                                 </div>

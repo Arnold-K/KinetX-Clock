@@ -1,7 +1,5 @@
 @include('component.password.override-password')
 
-
-
 @section('content')
 <div class="container">
     <div class="card">
@@ -13,7 +11,7 @@
                 @foreach ($users as $key => $user)
                     <li data-id="{{ $user->id }}" class="list-group-item d-flex align-items-center">
                         <div class="mr-3">
-                            <span>{{ $key }} - </span>
+                            <span>{{ $key+1 }} - </span>
                         </div>
                         <div class="d-flex justify-content-between flex-grow-1 align-items-center">
                             <a href="{{route('user.edit', $user->id)}}">{{ $user->name }}</a>
