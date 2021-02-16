@@ -85,11 +85,13 @@ class TimeSheetController extends Controller {
             'employee_id'=> $employee->id,
             'clock_in' => Carbon::now()
         ]);
-        return response()->json($timesheet);
         return redirect(route('timesheet.index'))->with(['status' => 'clock_in']);
     }
 
     public function edit(Request $request, TimeSheet $timesheet) {
+        if(auth()->user()->cant('update_timesheet')) {
+            return redirect(route('timesheet.index'))->withErrors(["no_permission_error" => "You have no permission to edit the timesheet."]);
+        }
         $timesheet_start_time = Carbon::createFromFormat('Y-m-d H:i:s', $timesheet->clock_in);
         $timesheet_end_time = Carbon::createFromFormat('Y-m-d H:i:s', $timesheet->clock_out);
 

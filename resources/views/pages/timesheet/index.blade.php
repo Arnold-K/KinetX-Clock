@@ -5,12 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             @if (session()->has('status') && session()->get('status') == "clock_in")
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success text-center" role="alert">
                     {{ __('You clocked in successfully') }}
                 </div>
             @endif
             @if (session()->has('status') && session()->get('status') == "clock_out")
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success text-center" role="alert">
                     {{ __('You clocked out successfully') }}
                 </div>
             @endif
@@ -19,6 +19,11 @@
                     {{ __('Payment was recoreded successfully') }}
                 </div>
             @endif
+            @error('no_permission_error')
+                <div class="alert alert-danger text-center" role="alert">
+                    {{ $message }}
+                </div>
+            @enderror
             <div class="card">
                 @if ($timesheet)
                     <div class="card-header bg-primary text-white">{{ __('Clock Out') }}</div>
@@ -153,9 +158,11 @@
                                             <div>
                                                 {{ $timesheet->description }}
                                             </div>
-                                            <div class="mt-3">
-                                                <a href="{{ route('timesheet.edit', $timesheet->id) }}" class="btn btn-primary">{{ __('Update') }}</a>
-                                            </div>
+                                            @can('update_timesheet')
+                                                <div class="mt-3">
+                                                    <a href="{{ route('timesheet.edit', $timesheet->id) }}" class="btn btn-primary">{{ __('Update') }}</a>
+                                                </div>
+                                            @endcan
                                         </div>
                                     </div>
                                 </div>
