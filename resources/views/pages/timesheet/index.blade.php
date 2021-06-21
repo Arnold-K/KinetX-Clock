@@ -146,7 +146,7 @@
                                             </h2>
                                             <div>
                                                 <button class="btn btn-dark">
-                                                    {{ (new \Carbon\Carbon($timesheet->clock_in))->diff(new \Carbon\Carbon($timesheet->clock_out))->format('%h:%I') }}
+                                                    {{ (new \Carbon\Carbon($timesheet->clock_out))->diffInMinutes( new \Carbon\Carbon($timesheet->clock_in))/60 }}:{{ ( new \Carbon\Carbon($timesheet->clock_out))->diff( new \Carbon\Carbon($timesheet->clock_in))->format('%I:%S') }}
                                                 </button>
                                             </div>
                                         </div>
