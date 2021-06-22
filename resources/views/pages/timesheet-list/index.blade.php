@@ -162,7 +162,7 @@
                                     </h2>
                                     <div>
                                         <button class="btn btn-dark">
-                                            {{ (new \Carbon\Carbon($timesheet->clock_out))->diffInMinutes( new \Carbon\Carbon($timesheet->clock_in))/60 }}:{{ ( new \Carbon\Carbon($timesheet->clock_out))->diff( new \Carbon\Carbon($timesheet->clock_in))->format('%I:%S') }}
+                                            {{ intval((new \Carbon\Carbon($timesheet->clock_out))->diffInMinutes( new \Carbon\Carbon($timesheet->clock_in))/60) > 10 ? intval((new \Carbon\Carbon($timesheet->clock_out))->diffInMinutes( new \Carbon\Carbon($timesheet->clock_in))/60) : '0' .intval((new \Carbon\Carbon($timesheet->clock_out))->diffInMinutes( new \Carbon\Carbon($timesheet->clock_in))/60) }}:{{ ( new \Carbon\Carbon($timesheet->clock_out))->diff( new \Carbon\Carbon($timesheet->clock_in))->format('%I:%S') }}
                                         </button>
                                     </div>
                                 </div>
