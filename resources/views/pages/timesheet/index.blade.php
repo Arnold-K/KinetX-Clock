@@ -16,7 +16,7 @@
             @endif
             @if (session()->has('status') && session()->get('status') == "payment_success")
                 <div class="alert alert-success" role="alert">
-                    {{ __('Payment was recoreded successfully') }}
+                    {{ __('Payment was recorded successfully') }}
                 </div>
             @endif
             @error('no_permission_error')
